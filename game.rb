@@ -23,7 +23,8 @@ class Game
   end
 
   def next_round
-    puts "----- NEW TURN -----"
+    sleep(1)
+    puts "\n----- NEW TURN -----"
     self.players.rotate!
     round_gameplay
     
@@ -35,25 +36,30 @@ class Game
     
     question = self.q.questions[-1][:question]
     answer = self.q.questions[-1][:answer]
+    questioner = self.players[0]
     # ask question
-    puts "#{self.players[0].name}: #{question}"
+    puts "#{questioner.name}: #{question}"
     input = gets.chomp
     
-    if self.validate_answer(input, answer) == true
-      puts self.players[0].opponent_correct
+    if self.answer_correct?(input, answer) == true
+      puts "#{questioner.name}: #{questioner.opponent_correct}"
     else
-      puts self.players[0].opponent_incorrect
+      puts "#{questioner.name}: #{questioner.opponent_incorrect}"
       self.players[1].lose_life
     end
-    self.display_lives
+
+    if self.winner?
+      # if there is a winner declare the winner and call game over
+      self.declare_winner(self.players[0])
+      self.game_over
+    else
+      # otherwise display both players scores
+      self.display_lives
+    end
   end
   
-  def validate_answer(input, answer)
-    if input.to_i == answer
-      return true
-    else
-      return false
-    end
+  def answer_correct?(input, answer)
+    input.to_i == answer ? true : false
   end
 
   def display_lives
@@ -64,5 +70,11 @@ class Game
     self.p1.lives == 0 || self.p2.lives == 0
   end
 
-  
+  def declare_winner(winner)
+    puts "\n#{winner.name} wins with a score of #{winner.lives}/3"
+  end
+
+  def game_over
+    puts "----- GAME OVER -----"
+  end
 end
