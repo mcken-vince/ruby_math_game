@@ -12,6 +12,7 @@ class Game
     @q = Question.new(1, 20)
   end
 
+  # puts players into array, calls gameplay and loops new rounds until there is a winner
   def new_game
     @players = [@p1, @p2]
 
@@ -22,14 +23,15 @@ class Game
 
   end
 
+  # handles delay, rotates players, initiates new round
   def next_round
     sleep(1)
     puts "\n----- NEW TURN -----"
     self.players.rotate!
     round_gameplay
-    
   end
   
+  # handles gameplay in each round
   def round_gameplay
     # new question
     self.q.generate_question
@@ -53,7 +55,7 @@ class Game
       self.declare_winner(self.players[0])
       self.game_over
     else
-      # otherwise display both players scores
+      # otherwise display both players scores and carry on
       self.display_lives
     end
   end
