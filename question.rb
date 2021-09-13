@@ -1,4 +1,6 @@
 class Question
+  attr_reader :questions
+  
   def initialize(min, max)
     @min = min
     @max = max
@@ -12,6 +14,6 @@ class Question
   def generate_question
     num1 = self.generate_number
     num2 = self.generate_number
-    @questions << { question: "What does #{num1} + #{num2} equal?", answer: (num1 + num2) }
+    @questions.push({ question: "What does #{num1} + #{num2} equal?", answer: (num1 + num2) })
   end
 end
